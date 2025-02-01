@@ -396,3 +396,10 @@ def plot_features_cat_regression(dataframe, target_col = "", columns = [], pvalu
         # Ajustamos el diseño y mostramos la figura completa
         plt.tight_layout()
         plt.show();
+
+# correlaciones de un dataframe
+def correlaciones_df(df):
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+    plt.title("Matriz de Correlación")
+    plt.show()
