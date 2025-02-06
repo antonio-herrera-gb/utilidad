@@ -403,3 +403,46 @@ def correlaciones_df(df):
     sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
     plt.title("Matriz de Correlación")
     plt.show()
+
+def plot_varianza_acumulada(modelo_pca, df):
+    """
+    Función para calcular y graficar el porcentaje de varianza explicada acumulada
+    en un Análisis de Componentes Principales (PCA).
+    
+    Parámetros:
+        - modelo_pca: modelo PCA entrenado de sklearn.decomposition.PCA
+        - df: DataFrame con los datos originales antes de aplicar PCA
+    """
+    prop_varianza_acum = modelo_pca.explained_variance_ratio_.cumsum()
+    
+    print('------------------------------------------')
+    print('Porcentaje de varianza explicada acumulada')
+    print('------------------------------------------')
+    print(prop_varianza_acum)
+    
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.plot(
+        np.arange(len(datos.columns)) + 1,
+        prop_varianza_acum,
+        marker='o'
+    )
+    
+    for x, y in zip(np.arange(len(datos.columns)) + 1, prop_varianza_acum):
+        label = round(y, 2)
+        ax.annotate(
+            label,
+            (x, y),
+            textcoords="offset points",
+            xytext=(0, 10),
+            ha='center'
+        )
+    
+    ax.set_ylim(0, 1.1)
+    ax.set_xticks(np.arange(modelo_pca.n_components_) + 1)
+    ax.set_title('Porcentaje de varianza explicada acumulada')
+    ax.set_xlabel('Componente principal')
+    ax.set_ylabel('Por. varianza acumulada')
+    
+    plt.show()
+    
+    return prop_varianza_acum
